@@ -1,36 +1,124 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Luxima Dashboard (Tenant)
 
-## Getting Started
+**Domain:** `dash.luxima.id` / `dash.awedz.id` / `[subdomain].awedz.id`  
+**Internal Port:** `3004`
 
-First, run the development server:
+`luxima-dash` adalah dashboard utama untuk **Tenant** (Vendor/Organization) dalam ekosistem Luxima. Aplikasi ini memungkinkan tenant untuk mengelola profile, layanan, booking, team members, dan melihat analytics performa bisnis mereka.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## 🚀 Features Supported
+
+### 1. Dashboard Overview
+- **Quick Stats**: Total Revenue, Active Bookings, Total Customers.
+- **Visual Analytics**: Grafik performa views/visitors (Umami-style) dan revenue.
+- **Recent Activity**: Daftar booking terbaru.
+
+### 2. Analytics
+- **Traffic Insights**: Page views, unique visitors, bounce rate.
+- **Audience Metrics**: Breakdown by Device, OS, Browser, dan Country.
+- **Top Pages**: Halaman layanan yang paling banyak dikunjungi.
+- **Business Stats**: Grafik Revenue dan Booking bulanan (chart visual baru).
+
+### 3. Management Modules
+- **Bookings**: CRUD dan status management untuk pesanan client.
+- **Invoices**: Daftar tagihan dan status pembayaran (integrated with Midtrans/Xendit logic).
+- **Payments**: Wallet balance, transaction history, dan withdrawal request.
+- **Organization**: Edit profil bisnis, logo, dan deskripsi layanan.
+- **Team**: Invite member baru, assign role (Admin/Member), dan remove access.
+- **Settings**: Konfigurasi tier langganan dan preferensi akun.
+
+### 4. Technical Highlights
+- **Architecture**: Next.js 16 (App Router) + Turbopack.
+- **Styling**: Tailwind CSS v4 + Shadcn UI (TweakCN Theme Synchronized).
+- **Charts**: Recharts dikemas ulang dengan `ChartContainer` Shadcn untuk visualisasi modern dan konsisten.
+- **Data Layer**: Direct Supabase integration dengan RLS (Row Level Security) enforcement via `proxy.ts`.
+- **Optimization**: Fully typed (TypeScript), configured metadata SEO, font optimization.
+- **Resilience**: Global Dummy Data Fallback jika database kosong atau error.
+
+---
+
+## 🛠 Tech Stack
+
+- **Framework**: [Next.js 16](https://nextjs.org/)
+- **Language**: TypeScript
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [Shadcn UI](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Charts**: [Recharts](https://recharts.org/) via Shadcn Charts
+- **Backend/Auth**: [Supabase](https://supabase.com/)
+- **Package Manager**: [Bun](https://bun.sh/)
+
+---
+
+## 🏃‍♂️ Getting Started
+
+### Prerequisites
+- Node.js 18+ or Bun 1.x
+- Supabase Project Credentials
+
+### Installation
+
+1.  **Clone Repository**
+    ```bash
+    git clone https://github.com/Siddiq-Achmad/luxima-dash.git
+    cd luxima-dash
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    bun install
+    ```
+
+3.  **Environment Variables**
+    Buat file `.env` berdasarkan `.env.example`:
+    ```env
+    NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+    NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+    ```
+
+4.  **Run Development Server**
+    ```bash
+    bun dev --port 3004
+    ```
+    Access via `http://localhost:3004`.
+
+---
+
+## 🧪 Verification
+
+- **Linting**:
+    ```bash
+    bun run lint
+    ```
+- **Type Checking**:
+    ```bash
+    bun run tsc --noEmit
+    ```
+- **Produciton Build**:
+    ```bash
+    bun run build
+    ```
+
+---
+
+## 📂 Project Structure
+
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+luxima-dash/
+├── app/                  # App Router pages
+│   ├── (dashboard)/      # Main authenticated layout
+│   │   ├── analytics/    # Analytics page w/ charts
+│   │   ├── bookings/     # Booking management
+│   │   └── ...
+│   ├── layout.tsx        # Root layout (fonts, metadata)
+│   └── globals.css       # Global styles & theme variables
+├── components/           # React components
+│   ├── dashboard/        # Dashboard-specific blocks (charts, tables)
+│   └── ui/               # Generic Shadcn UI components
+├── lib/                  # Utilities
+│   ├── data/             # Data Access Layer (Server Actions/Fetchers)
+│   └── dummy-data.ts     # Fallback data dictionary
+├── next.config.ts        # Next.js configuration
+└── proxy.ts              # Middleware replacement for Multi-tenancy
+```
