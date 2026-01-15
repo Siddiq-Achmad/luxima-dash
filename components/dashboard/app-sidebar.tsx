@@ -55,6 +55,11 @@ const mainNavItems: NavItem[] = [
         icon: LayoutDashboard,
     },
     {
+        title: "Analytics",
+        url: "/analytics",
+        icon: BarChart3,
+    },
+    {
         title: "Bookings",
         url: "/bookings",
         icon: Calendar,
@@ -68,11 +73,6 @@ const mainNavItems: NavItem[] = [
         title: "Payments",
         url: "/payments",
         icon: CreditCard,
-    },
-    {
-        title: "Analytics",
-        url: "/analytics",
-        icon: BarChart3,
     },
 ];
 

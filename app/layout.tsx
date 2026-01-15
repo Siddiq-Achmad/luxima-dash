@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
+import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google"; // Removed unused fonts
 import "./globals.css";
 import { baseUrl } from "@/lib/constants";
+import { Toaster } from "@/components/ui/sonner"; // Added Sonner toaster
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -9,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
-const PlusJakartaSans = Plus_Jakarta_Sans({
+const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-sans",
   weight: ["200", "300", "400", "500", "600", "700", "800"],
   subsets: ["latin"],
@@ -18,15 +19,14 @@ const PlusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title: {
-    template:
-      "%s - LUXIMA.ID | Creative Studio, Studio Photography, Web Dev & Digital Marketing",
-    default:
-      "LUXIMA.ID | Wedding Industry, Photography, Pengembangan Teknologi & Bisnis Digital",
+    template: "%s | Luxima Dashboard",
+    default: "Luxima Dashboard - Manage Your Business",
   },
-  description:
-    "LUXIMA.ID | Wedding Industry, Photography, Pengembangan Teknologi & Bisnis Digital. Mulai Bangun Bisnis Wedding yang Lebih Profesional",
+  description: "Comprehensive dashboard for managing bookings, invoices, team, and organization settings.",
   metadataBase: baseUrl,
+  robots: "noindex, nofollow", // Default to private
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -35,9 +35,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${PlusJakartaSans.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );

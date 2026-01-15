@@ -1,7 +1,8 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, Download, Eye, Plus } from "lucide-react";
+import { FileText, Eye, Plus } from "lucide-react";
+import { Invoice } from "@/lib/types";
 import { getInvoices } from "@/lib/data/invoices";
 import { format } from "date-fns";
 
@@ -45,7 +46,7 @@ export default async function InvoicesPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-4">
-                        {invoices.map((invoice: any) => (
+                        {invoices.map((invoice: Invoice) => (
                             <div
                                 key={invoice.id}
                                 className="flex items-center justify-between rounded-lg border p-4"

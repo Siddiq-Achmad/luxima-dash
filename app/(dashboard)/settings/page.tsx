@@ -12,7 +12,7 @@ export default async function SettingsPage() {
         return <div>Loading...</div>;
     }
 
-    const tenantSettings = settings.settings as any || {};
+    const tenantSettings = settings as any || {};
 
     return (
         <div className="space-y-6">
@@ -42,7 +42,7 @@ export default async function SettingsPage() {
                         </div>
                         <div className="space-y-2">
                             <label className="text-sm font-medium">Subdomain</label>
-                            <Input defaultValue={settings.subdomain || settings.slug} disabled />
+                            <Input defaultValue={tenantSettings.subdomain || (tenantSettings as any).slug} disabled />
                             <p className="text-xs text-muted-foreground">
                                 {settings.subdomain ? `${settings.subdomain}.awedz.id` : "Not configured"}
                             </p>

@@ -1,11 +1,24 @@
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Loading() {
   return (
-    <div className='flex flex-col items-center justify-center h-screen w-full gap-2'>
-      <div className="border-primary mb-4 h-10 w-10 animate-spin rounded-full border-t-2 border-b-2 ease-linear" />
-      <h2 className=" text-2xl font-mono font-sans text-primary tracking-wider uppercase">Loading</h2>
-      <p className=" text-sm font-light text-muted-foreground">Please wait</p>
+    <div className="flex h-[calc(100vh-4rem)] flex-col gap-8 p-8">
+      <div className="flex items-center justify-between">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-[200px]" />
+          <Skeleton className="h-4 w-[300px]" />
+        </div>
+        <Skeleton className="h-10 w-[120px]" />
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Skeleton key={i} className="h-[120px] rounded-xl" />
+        ))}
+      </div>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <Skeleton className="col-span-4 h-[400px] rounded-xl" />
+        <Skeleton className="col-span-3 h-[400px] rounded-xl" />
+      </div>
     </div>
-  )
+  );
 }

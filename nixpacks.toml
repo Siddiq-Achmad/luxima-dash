@@ -1,0 +1,22 @@
+[build]
+builder = "nixpacks"
+
+[variables]
+NODE_ENV = "production"
+
+[phases.setup]
+# Use Node.js 22 (latest available in nixpkgs) to satisfy Prisma requirements
+nixPkgs = ["nodejs_22", "bun", "curl", "wget"]
+aptPkgs = ["build-essential"]
+
+[phases.install]
+# Use --ignore-scripts to skip Prisma's preinstall Node version check
+# Prisma Client will be generated during the build phase
+cmds = ["bun install --ignore-scripts"]
+
+[phases.build]
+# Generate Prisma Client before building Next.js
+cmds = ["bunx prisma generate", "bun run build"]
+
+[start]
+cmd = "bun run start"

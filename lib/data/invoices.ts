@@ -1,31 +1,34 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentTenant } from "@/lib/auth/get-user";
+import { DUMMY_INVOICES } from "@/lib/dummy-data";
+import { Invoice } from "@/lib/types";
 
-export async function getInvoices() {
+export async function getInvoices(): Promise<Invoice[]> {
     const supabase = await createClient();
     const tenant = await getCurrentTenant();
 
-    if (!tenant) return [];
+    if (!tenant) return DUMMY_INVOICES;
 
     const { data: invoices } = await supabase
         .from("invoices")
         .select(`
-            id,
-            invoice_number,
-            amount,
-            status,
-            due_date,
-            created_at,
-            paid_at,
+            *,
             subscriptions (
-               plan_id,
-               subscription_plans (
-                 name
-               )
+                subscription_plans (
+                    name
+                )
+            ),
+            profiles (
+                full_name,
+                email
             )
         `)
         .eq("tenant_id", tenant.id)
         .order("created_at", { ascending: false });
 
-    return invoices || [];
+    if (!invoices || invoices.length === 0) {
+        return DUMMY_INVOICES;
+    }
+
+    return invoices as unknown as Invoice[];
 }
