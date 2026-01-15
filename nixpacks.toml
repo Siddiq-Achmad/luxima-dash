@@ -16,7 +16,7 @@ cmds = ["bun install --ignore-scripts"]
 
 [phases.build]
 # Generate Prisma Client before building Next.js
-cmds = ["bunx prisma generate", "bun run build"]
+cmds = ["bun run build"]
 
 [start]
 cmd = "bun run start"
