@@ -1,6 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentTenant } from "@/lib/auth/get-user";
-import { DUMMY_BOOKINGS, DUMMY_INVOICES, DUMMY_ANALYTICS, DUMMY_UMAMI_DATA } from "@/lib/dummy-data"; // Fallbacks
+import { DUMMY_BOOKINGS, DUMMY_UMAMI_DATA } from "@/lib/dummy-data"; // Fallbacks
 
 export async function getDashboardStats() {
     const supabase = await createClient();
@@ -11,7 +11,7 @@ export async function getDashboardStats() {
         return getDummyStats();
     }
 
-    const today = new Date();
+
 
     // 1. Total Revenue (sum/groupBy)
     // Supabase can do sum, but easiest is to query invoices/transactions sum or maintain a rollup.

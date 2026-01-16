@@ -68,24 +68,24 @@ export function TeamDialog() {
                 </DialogHeader>
                 <form onSubmit={onSubmit}>
                     <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="email" className="text-right">
+                        <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-4 sm:gap-4">
+                            <Label htmlFor="email" className="text-left sm:text-right">
                                 Email
                             </Label>
                             <Input
                                 id="email"
                                 name="email"
                                 type="email"
-                                className="col-span-3"
+                                className="col-span-1 sm:col-span-3"
                                 required
                             />
                         </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                            <Label htmlFor="role" className="text-right">
+                        <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-4 sm:gap-4">
+                            <Label htmlFor="role" className="text-left sm:text-right">
                                 Role
                             </Label>
                             <Select name="role" required defaultValue="staff">
-                                <SelectTrigger className="col-span-3">
+                                <SelectTrigger className="col-span-1 sm:col-span-3">
                                     <SelectValue placeholder="Select a role" />
                                 </SelectTrigger>
                                 <SelectContent>

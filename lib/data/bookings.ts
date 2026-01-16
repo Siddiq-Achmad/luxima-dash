@@ -54,7 +54,7 @@ export async function getPackages(): Promise<VendorPackage[]> {
 
     const { data: packages } = await supabase
         .from("vendor_packages")
-        .select("id, name, price, vendors!inner(tenant_id)")
+        .select("id, name, price, vendor_id, vendors!inner(tenant_id)")
         .eq("vendors.tenant_id", tenant.id);
 
     if (!packages || packages.length === 0) {

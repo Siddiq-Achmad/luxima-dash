@@ -5,26 +5,14 @@ import { getCurrentTenant } from "@/lib/auth/get-user";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const bookingSchema = z.object({
-    user_id: z.string().uuid(),
-    package_id: z.string().uuid().optional(),
-    event_start: z.string(), // ISO date string
-    event_end: z.string(),   // ISO date string
-    status: z.string().optional(),
-    notes: z.string().optional(),
-});
+import { bookingSchema } from "@/lib/schemas";
+import { Booking } from "@/lib/types";
 
 export async function createBooking(data: z.infer<typeof bookingSchema>) {
     const supabase = await createClient();
     const tenant = await getCurrentTenant();
 
     if (!tenant) return { error: "Unauthorized" };
-
-    // We need a vendor_id for the booking.
-    // For now, let's assume the tenant has at least one vendor profile or we pick the first one linked to the tenant
-    // Or created booking is linked to a specific vendor?
-    // Schema: bookings -> vendor_id, user_id.
-    // We need to find the vendor_id associated with this tenant.
 
     const { data: vendor } = await supabase
         .from("vendors")
@@ -35,9 +23,7 @@ export async function createBooking(data: z.infer<typeof bookingSchema>) {
     if (!vendor) return { error: "No vendor profile found for this tenant" };
 
     const { error } = await supabase.from("bookings").insert({
-        tenant_id: tenant.id, // Wait, bookings doesn't have tenant_id? It has vendor_id.
-        // Let's check schema: bookings (vendor_id, user_id, package_id, ...)
-        // So we use vendor.id
+        tenant_id: tenant.id,
         vendor_id: vendor.id,
         user_id: data.user_id,
         package_id: data.package_id,
@@ -77,4 +63,27 @@ export async function deleteBooking(id: string) {
     if (error) return { error: error.message };
     revalidatePath("/bookings");
     return { success: true };
+}
+
+export async function getBookingById(id: string) {
+    const supabase = await createClient();
+
+    if (id.startsWith('dummy-')) {
+        const { DUMMY_BOOKINGS } = await import('@/lib/dummy-data');
+        return DUMMY_BOOKINGS.find(b => b.id === id);
+    }
+
+    const { data, error } = await supabase
+        .from("bookings")
+        .select(`
+           *,
+           profiles:user_id (*),
+           vendor_packages:package_id (*),
+           vendors:vendor_id (*)
+       `)
+        .eq("id", id)
+        .single();
+
+    if (error) return null;
+    return data as Booking;
 }

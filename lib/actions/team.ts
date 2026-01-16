@@ -5,10 +5,7 @@ import { getCurrentTenant } from "@/lib/auth/get-user";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const memberSchema = z.object({
-    email: z.string().email(),
-    role: z.string(), // role_id really, or we map name to id
-});
+import { memberSchema } from "@/lib/schemas";
 
 export async function inviteMember(data: z.infer<typeof memberSchema>) {
     // This typically involves:
@@ -27,12 +24,9 @@ export async function inviteMember(data: z.infer<typeof memberSchema>) {
     if (!tenant) return { error: "Unauthorized" };
 
     // 1. Find user by email (Requires admin privileges usually or a secure function)
-    const { data: users } = await supabase
-        .from("profiles") // Profiles usually has email if we synced it? Or users table?
-        // Accessing 'users' table (auth.users) is restricted.
-        // We really should use `user_invitations`.
-        // Let's implement `user_invitations` insert.
-        .select("id"); // Placeholder logic
+    // 1. Find user by email (Requires admin privileges usually or a secure function)
+    // We really should use `user_invitations`.
+    // Let's implement `user_invitations` insert.
 
     const { error } = await supabase.from("user_invitations").insert({
         tenant_id: tenant.id,

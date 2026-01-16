@@ -59,7 +59,7 @@ export async function proxy(request: NextRequest) {
     // Redirect to auth if not authenticated
     if (!user && !isPublic) {
         const redirectUrl = new URL(`${AUTH_DOMAIN}/`);
-        redirectUrl.searchParams.set("redirect", request.url);
+        redirectUrl.searchParams.set("redirectTo", request.url);
         return NextResponse.redirect(redirectUrl);
     }
 

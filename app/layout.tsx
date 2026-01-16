@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google"; // Removed unused fonts
 import "./globals.css";
 import { baseUrl } from "@/lib/constants";
-import { Toaster } from "@/components/ui/sonner"; // Added Sonner toaster
+import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
@@ -33,12 +34,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${plusJakartaSans.variable} ${jetbrainsMono.variable} antialiased`}
       >
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

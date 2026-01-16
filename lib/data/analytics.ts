@@ -91,8 +91,9 @@ export async function getAnalyticsData(): Promise<AnalyticsData> {
     });
 
     const packageCounts: Record<string, number> = {};
-    packages?.forEach((p: any) => {
-        const name = p.vendor_packages?.name || "Custom";
+    packages?.forEach((p) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const name = (p as any).vendor_packages?.name || "Custom";
         packageCounts[name] = (packageCounts[name] || 0) + 1;
     });
 

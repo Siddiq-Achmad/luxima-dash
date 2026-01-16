@@ -191,4 +191,11 @@
     @apply bg-background text-foreground;
     letter-spacing: var(--tracking-normal);
   }
+
+
+  a:hover,
+  a:active {
+    @apply text-primary shadow-md;
+    text-decoration: none;
+  }
 }

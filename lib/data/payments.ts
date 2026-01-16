@@ -50,7 +50,9 @@ export async function getPaymentStats() {
         amount: Number(t.amount),
         status: t.status,
         created_at: t.created_at!,
-        description: t.payment_method || "Transaction"
+        description: t.description || t.payment_method || "Transaction",
+        payment_method: t.payment_method,
+        tenant_id: t.tenant_id
     }));
 
     return {

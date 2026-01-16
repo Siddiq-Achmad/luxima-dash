@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import { updateOrganization } from "@/lib/actions/organization";
 import { toast } from "sonner";
 import {
@@ -16,9 +15,10 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tenant } from "@/lib/types";
 
 type OrgFormProps = {
-    initialData: any;
+    initialData: Partial<Tenant>;
 };
 
 export function OrganizationForm({ initialData }: OrgFormProps) {
@@ -71,7 +71,7 @@ export function OrganizationForm({ initialData }: OrgFormProps) {
                 <DialogTrigger asChild>
                     <Button>Edit Organization Details</Button>
                 </DialogTrigger>
-                <DialogContent>
+                <DialogContent className="sm:max-w-[500px]">
                     <DialogHeader>
                         <DialogTitle>Edit Organization</DialogTitle>
                         <DialogDescription>
@@ -80,23 +80,23 @@ export function OrganizationForm({ initialData }: OrgFormProps) {
                     </DialogHeader>
                     <form onSubmit={onSubmit}>
                         <div className="grid gap-4 py-4">
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="name" className="text-right">
+                            <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-4 sm:gap-4">
+                                <Label htmlFor="name" className="text-left sm:text-right">
                                     Name
                                 </Label>
-                                <Input id="name" name="name" defaultValue={initialData.name} className="col-span-3" required />
+                                <Input id="name" name="name" defaultValue={initialData.name} className="col-span-1 sm:col-span-3" required />
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="billing_email" className="text-right">
+                            <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-4 sm:gap-4">
+                                <Label htmlFor="billing_email" className="text-left sm:text-right">
                                     Email
                                 </Label>
-                                <Input id="billing_email" name="billing_email" type="email" defaultValue={initialData.billing_email} className="col-span-3" />
+                                <Input id="billing_email" name="billing_email" type="email" defaultValue={initialData.billing_email} className="col-span-1 sm:col-span-3" />
                             </div>
-                            <div className="grid grid-cols-4 items-center gap-4">
-                                <Label htmlFor="description" className="text-right">
+                            <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-4 sm:gap-4">
+                                <Label htmlFor="description" className="text-left sm:text-right">
                                     Description
                                 </Label>
-                                <Input id="description" name="description" defaultValue={initialData.description} className="col-span-3" />
+                                <Input id="description" name="description" defaultValue={initialData.description} className="col-span-1 sm:col-span-3" />
                             </div>
                         </div>
                         <DialogFooter>

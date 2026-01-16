@@ -72,14 +72,14 @@ const browserConfig = {
 // --- Components ---
 
 type GenericChartProps = {
-    data: any[];
+    data: Record<string, unknown>[];
     title?: string;
     description?: string;
 };
 
 export function OverviewChart({ data }: GenericChartProps) {
     return (
-        <ChartContainer config={trafficConfig} className="max-h-[260px] w-full">
+        <ChartContainer config={trafficConfig} className="max-h-[260px] w-full h-full">
             <AreaChart
                 accessibilityLayer
                 data={data}
@@ -125,7 +125,9 @@ export function OverviewChart({ data }: GenericChartProps) {
 export function DeviceStatsChart({ data }: GenericChartProps) {
     const chartData = data.map((item) => ({
         ...item,
-        fill: `var(--color-${item.name.toLowerCase()})`,
+        name: item.name as string,
+        count: item.count as number,
+        fill: `var(--color-${(item.name as string).toLowerCase()})`,
     }));
 
     return (
@@ -160,7 +162,7 @@ export function DeviceStatsChart({ data }: GenericChartProps) {
                                             y={viewBox.cy}
                                             className="fill-foreground text-3xl font-bold"
                                         >
-                                            {chartData.reduce((acc, curr) => acc + curr.count, 0).toLocaleString()}
+                                            {chartData.reduce((acc, curr) => acc + (curr.count as number), 0).toLocaleString()}
                                         </tspan>
                                         <tspan
                                             x={viewBox.cx}
@@ -227,7 +229,7 @@ export function OSStatsChart({ data }: GenericChartProps) {
 
     const osConfig = {
         views: { label: "Visitors" },
-        ...Object.fromEntries(data.map((d, i) => [d.name, { label: d.name, color: `var(--chart-${i + 1})` }]))
+        ...Object.fromEntries(data.map((d, i) => [d.name as string, { label: d.name as string, color: `var(--chart-${i + 1})` }]))
     } satisfies ChartConfig
 
     return (
@@ -254,7 +256,7 @@ export function OSStatsChart({ data }: GenericChartProps) {
     )
 }
 
-export function TopPagesList({ data }: { data: any[] }) {
+export function TopPagesList({ data }: { data: { path: string; views: number }[] }) {
     const maxViews = Math.max(...data.map(d => d.views));
     return (
         <div className="space-y-4">
@@ -283,7 +285,7 @@ export function TopPagesList({ data }: { data: any[] }) {
 // Legacy Re-export for compatibility if needed (but refactored to use new container if possible, or just standard recharts wrapper)
 // For time efficiency, I will implement a basic version of AnalyticsCharts using the new system.
 
-export function AnalyticsCharts({ revenueData, bookingsData }: { revenueData: any[], bookingsData: any[] }) {
+export function AnalyticsCharts({ revenueData, bookingsData }: { revenueData: Record<string, unknown>[], bookingsData: Record<string, unknown>[] }) {
     const revenueConfig = {
         amount: { label: "Revenue", color: "var(--chart-1)" }
     } satisfies ChartConfig;

@@ -53,7 +53,7 @@ export function BookingDialog({ mode = "create", booking, customers, packages, t
             event_start: formData.get("event_start") as string, // Check if this is datetime-local format
             event_end: formData.get("event_end") as string,
             notes: formData.get("notes") as string,
-            status: formData.get("status") as string,
+            status: formData.get("status") as "pending" | "confirmed" | "completed" | "cancelled",
         };
 
         // basic validation
@@ -101,7 +101,7 @@ export function BookingDialog({ mode = "create", booking, customers, packages, t
                     </Button>
                 )}
             </DialogTrigger>
-            <DialogContent className="sm:max-w-[500px]">
+            <DialogContent className="sm:max-w-[500px] md:max-w-[600px]">
                 <DialogHeader>
                     <DialogTitle>{mode === "create" ? "New Booking" : "Edit Booking"}</DialogTitle>
                     <DialogDescription>
@@ -120,7 +120,7 @@ export function BookingDialog({ mode = "create", booking, customers, packages, t
                                         <SelectValue placeholder="Select a customer" />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {customers.map((c: any) => (
+                                        {customers.map((c) => (
                                             <SelectItem key={c.profiles.id} value={c.profiles.id}>
                                                 {c.profiles.full_name} ({c.profiles.email})
                                             </SelectItem>
@@ -146,7 +146,7 @@ export function BookingDialog({ mode = "create", booking, customers, packages, t
                             </Select>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div className="grid gap-2">
                                 <Label htmlFor="event_start">Start Time</Label>
                                 <Input

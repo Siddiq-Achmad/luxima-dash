@@ -5,11 +5,7 @@ import { getCurrentTenant } from "@/lib/auth/get-user";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
-export const orgSchema = z.object({
-    name: z.string().min(2),
-    billing_email: z.string().email().optional(),
-    description: z.string().optional(),
-});
+import { orgSchema } from "@/lib/schemas";
 
 export async function updateOrganization(data: z.infer<typeof orgSchema>) {
     const supabase = await createClient();

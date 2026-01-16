@@ -11,6 +11,17 @@ import {
     BarChart3,
     Bell,
     LogOut,
+    PenTool,
+    Image as ImageIcon,
+    Package,
+    User,
+    Receipt,
+    Activity,
+    Megaphone,
+    Target,
+    CheckSquare,
+    Inbox,
+    MessageSquare,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -47,8 +58,7 @@ type NavItem = {
     badge?: string;
 };
 
-// Main navigation items
-const mainNavItems: NavItem[] = [
+const dashboardItems: NavItem[] = [
     {
         title: "Dashboard",
         url: "/",
@@ -59,20 +69,80 @@ const mainNavItems: NavItem[] = [
         url: "/analytics",
         icon: BarChart3,
     },
+];
+
+const communicationItems: NavItem[] = [
+    {
+        title: "Inbox",
+        url: "/inbox",
+        icon: Inbox,
+    },
+    {
+        title: "Messages",
+        url: "/messages",
+        icon: MessageSquare,
+    },
+];
+
+const operationsItems: NavItem[] = [
+    {
+        title: "Calendar",
+        url: "/calendar",
+        icon: Calendar,
+    },
     {
         title: "Bookings",
         url: "/bookings",
-        icon: Calendar,
+        icon: Calendar, // Duplicate icon, maybe use differnt one? Calendar is fine.
     },
+    {
+        title: "Tasks",
+        url: "/tasks",
+        icon: CheckSquare,
+    },
+    {
+        title: "Kanban",
+        url: "/tasks/kanban",
+        icon: Target,
+    },
+];
+
+const crmItems: NavItem[] = [
+    {
+        title: "Customers",
+        url: "/customers",
+        icon: Users,
+    },
+];
+
+const serviceItems: NavItem[] = [
+    {
+        title: "Portfolio",
+        url: "/portfolio",
+        icon: ImageIcon,
+    },
+    {
+        title: "Packages",
+        url: "/packages",
+        icon: Package,
+    },
+    {
+        title: "Posts", // Added based on context of 'Marketing' -> Posts
+        url: "/posts",
+        icon: Megaphone,
+    },
+];
+
+const financeItems: NavItem[] = [
     {
         title: "Invoices",
         url: "/invoices",
         icon: FileText,
     },
     {
-        title: "Payments",
+        title: "Transactions", // Renamed from Payments
         url: "/payments",
-        icon: CreditCard,
+        icon: Receipt, // Changed icon to Receipt or similar
     },
 ];
 
@@ -87,6 +157,16 @@ const managementItems: NavItem[] = [
         title: "Organization",
         url: "/organization",
         icon: Building2,
+    },
+    {
+        title: "Billing",
+        url: "/billing",
+        icon: CreditCard,
+    },
+    {
+        title: "Usage",
+        url: "/usage",
+        icon: Activity,
     },
     {
         title: "Settings",
@@ -104,20 +184,36 @@ type AppSidebarProps = {
 export function AppSidebar({ user, tenant, pendingBookings = 0 }: AppSidebarProps) {
     const pathname = usePathname();
 
-    // Add booking badge dynamically
-    const navItems = mainNavItems.map((item) => {
-        if (item.url === "/bookings" && pendingBookings > 0) {
-            return { ...item, badge: pendingBookings.toString() };
-        }
-        return item;
-    });
-
     const handleSignOut = async () => {
         await signOut();
     };
 
+    // Helper to render menu items
+    const renderMenu = (items: NavItem[]) => (
+        <SidebarMenu>
+            {items.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild isActive={pathname === item.url}>
+                        <Link href={item.url}>
+                            <item.icon className="h-4 w-4" />
+                            <span>{item.title}</span>
+                            {item.title === "Bookings" && pendingBookings > 0 && (
+                                <Badge
+                                    variant="secondary"
+                                    className="ml-auto h-5 px-1.5 text-xs"
+                                >
+                                    {pendingBookings}
+                                </Badge>
+                            )}
+                        </Link>
+                    </SidebarMenuButton>
+                </SidebarMenuItem>
+            ))}
+        </SidebarMenu>
+    );
+
     return (
-        <Sidebar>
+        <Sidebar variant="inset">
             <SidebarHeader className="border-b border-sidebar-border">
                 <div className="flex items-center gap-2 px-2 py-3">
                     {tenant?.logoUrl ? (
@@ -145,47 +241,38 @@ export function AppSidebar({ user, tenant, pendingBookings = 0 }: AppSidebarProp
 
             <SidebarContent>
                 <SidebarGroup>
-                    <SidebarGroupLabel>Main</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {navItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild isActive={pathname === item.url}>
-                                        <Link href={item.url}>
-                                            <item.icon className="h-4 w-4" />
-                                            <span>{item.title}</span>
-                                            {item.badge && (
-                                                <Badge
-                                                    variant="secondary"
-                                                    className="ml-auto h-5 px-1.5 text-xs"
-                                                >
-                                                    {item.badge}
-                                                </Badge>
-                                            )}
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
+                    <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(dashboardItems)}</SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Operations</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(operationsItems)}</SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Communication</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(communicationItems)}</SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>CRM</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(crmItems)}</SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Services & Marketing</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(serviceItems)}</SidebarGroupContent>
+                </SidebarGroup>
+
+                <SidebarGroup>
+                    <SidebarGroupLabel>Finance</SidebarGroupLabel>
+                    <SidebarGroupContent>{renderMenu(financeItems)}</SidebarGroupContent>
                 </SidebarGroup>
 
                 <SidebarGroup>
                     <SidebarGroupLabel>Management</SidebarGroupLabel>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            {managementItems.map((item) => (
-                                <SidebarMenuItem key={item.title}>
-                                    <SidebarMenuButton asChild isActive={pathname === item.url}>
-                                        <Link href={item.url}>
-                                            <item.icon className="h-4 w-4" />
-                                            <span>{item.title}</span>
-                                        </Link>
-                                    </SidebarMenuButton>
-                                </SidebarMenuItem>
-                            ))}
-                        </SidebarMenu>
-                    </SidebarGroupContent>
+                    <SidebarGroupContent>{renderMenu(managementItems)}</SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
 
@@ -194,7 +281,7 @@ export function AppSidebar({ user, tenant, pendingBookings = 0 }: AppSidebarProp
                     <SidebarMenuItem>
                         <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton className="w-full">
+                                <SidebarMenuButton className="h-full w-full">
                                     <Avatar className="h-6 w-6">
                                         <AvatarImage src={user?.avatarUrl || undefined} />
                                         <AvatarFallback>{user?.initials || "??"}</AvatarFallback>

@@ -36,6 +36,6 @@ export async function getTeamMembers(): Promise<TenantMember[]> {
 
     return members.map(m => ({
         ...m,
-        role: (m.roles as any)?.role || "member" // Normalize role
+        role: (m.roles as unknown as { role: string })?.role || "member" // Normalize role
     })) as unknown as TenantMember[];
 }
