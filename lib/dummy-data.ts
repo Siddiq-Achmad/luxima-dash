@@ -8,9 +8,11 @@ import {
     Vendor,
     Post,
     VendorImage,
-    UsageRecord,
+    Task,
+    Category,
+    VendorCategory,
     Tenant,
-    Task
+    UsageRecord
 } from "./types";
 
 export const DUMMY_PROFILE: Profile = {
@@ -496,5 +498,61 @@ export const DUMMY_CUSTOMERS: import("./types").Customer[] = [
         tags: [],
         created_at: new Date(Date.now() - 86400000 * 1).toISOString(),
         last_contacted_at: new Date(Date.now()).toISOString(),
+    }
+];
+
+export const DUMMY_CATEGORIES: Category[] = [
+    {
+        id: "cat-1",
+        name: "Photography",
+        slug: "photography",
+        description: "Professional wedding and event photography",
+        icon: "Camera",
+        created_at: new Date().toISOString(),
+        status: "active",
+        sort_order: 1
+    },
+    {
+        id: "cat-2",
+        name: "Videography",
+        slug: "videography",
+        description: "Cinematic video production",
+        icon: "Video",
+        created_at: new Date().toISOString(),
+        status: "active",
+        sort_order: 2
+    },
+    {
+        id: "cat-3",
+        name: "Venues",
+        slug: "venues",
+        description: "Wedding and event venues",
+        icon: "MapPin",
+        created_at: new Date().toISOString(),
+        status: "active",
+        sort_order: 3
+    },
+    {
+        id: "cat-4",
+        name: "Catering",
+        slug: "catering",
+        description: "Food and beverage services",
+        icon: "Utensils",
+        created_at: new Date().toISOString(),
+        status: "active",
+        sort_order: 4
+    }
+];
+
+export const DUMMY_VENDOR_CATEGORIES: VendorCategory[] = [
+    {
+        vendor_id: "dummy-vendor-1",
+        category_id: "cat-1",
+        categories: DUMMY_CATEGORIES[0] // Photography
+    },
+    {
+        vendor_id: "dummy-vendor-1",
+        category_id: "cat-2",
+        categories: DUMMY_CATEGORIES[1] // Videography
     }
 ];

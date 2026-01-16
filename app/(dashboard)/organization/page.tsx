@@ -5,7 +5,20 @@ import { OrganizationForm } from "@/components/dashboard/organization/organizati
 export default async function OrganizationPage() {
     const settings = await getTenantSettings();
 
-    if (!settings) return <div>Loading...</div>;
+    if (!settings) {
+        return (
+            <div className="p-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Organization Not Found</CardTitle>
+                        <CardDescription>
+                            Please contact support or ensure your account is set up correctly.
+                        </CardDescription>
+                    </CardHeader>
+                </Card>
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-6">

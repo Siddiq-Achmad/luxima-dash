@@ -41,6 +41,13 @@ export type Category = {
     created_at?: string;
 };
 
+export type VendorCategory = {
+    vendor_id: string;
+    category_id: string;
+    categories?: Category;
+    vendors?: Vendor;
+};
+
 export type Tag = {
     id: string;
     name: string;
@@ -138,14 +145,23 @@ export type Booking = {
     profiles?: Profile;
 };
 
+// Tenant type moved to top of file to avoid duplication
+
+export type DatabaseRole = {
+    name: string;
+    role: string;
+};
+
 export type TenantMember = {
     id: string;
     tenant_id?: string;
     profile_id: string;
-    role: string;
+    role: string; // Used for UI display, normalized from relationship
+    role_id?: string; // Foreign key
     joined_at: string;
     status: string;
     profiles?: Profile;
+    roles?: DatabaseRole; // Relation to roles table
 };
 
 export type Invoice = {

@@ -64,33 +64,33 @@ export async function proxy(request: NextRequest) {
     }
 
     // If authenticated, verify tenant tier access
-    // if (user) {
-    //     // Get user's tenant membership
-    //     const { data: membership } = await supabase
-    //         .from("tenant_members")
-    //         .select("id, role_tier, tenant_id, status")
-    //         .eq("profile_id", user.id)
-    //         .eq("status", "active")
-    //         .single();
+    if (user) {
+        // Get user's tenant membership
+        const { data: membership } = await supabase
+            .from("tenant_members")
+            .select("id, role_tier, tenant_id, status")
+            .eq("profile_id", user.id)
+            .eq("status", "active")
+            .single();
 
-    //     if (!membership) {
-    //         // User has no tenant membership - redirect to main site
-    //         return NextResponse.redirect(
-    //             new URL("https://app.luxima.id/join-organization", request.url)
-    //         );
-    //     }
+        if (!membership) {
+            // User has no tenant membership - redirect to main site
+            return NextResponse.redirect(
+                new URL("https://luxima.id/join-organization", request.url)
+            );
+        }
 
-    //     // Must be tenant tier or higher
-    //     if (membership.role_tier !== "system" && membership.role_tier !== "tenant") {
-    //         return NextResponse.redirect(
-    //             new URL(`${AUTH_DOMAIN}/unauthorized?reason=tier`, request.url)
-    //         );
-    //     }
+        // Must be tenant tier or higher
+        if (membership.role_tier !== "system" && membership.role_tier !== "tenant") {
+            return NextResponse.redirect(
+                new URL(`${AUTH_DOMAIN}/unauthorized?reason=tier`, request.url)
+            );
+        }
 
-    //     // Set tenant context headers
-    //     response.headers.set("x-tenant-id", membership.tenant_id);
-    //     response.headers.set("x-user-role-tier", membership.role_tier);
-    // }
+        // Set tenant context headers
+        response.headers.set("x-tenant-id", membership.tenant_id);
+        response.headers.set("x-user-role-tier", membership.role_tier);
+    }
 
     return response;
 }

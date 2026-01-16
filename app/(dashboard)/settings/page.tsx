@@ -4,12 +4,13 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Building2, Shield, Bell, Palette } from "lucide-react";
 import { getTenantSettings } from "@/lib/data/settings";
+import { SettingsOrganizationForm } from "@/components/dashboard/settings/settings-organization-form";
 
 export default async function SettingsPage() {
     const settings = await getTenantSettings();
 
     if (!settings) {
-        return <div>Loading...</div>;
+        return <div>Organization settings not found.</div>;
     }
 
     const tenantSettings = settings as Record<string, unknown> || {};
@@ -34,26 +35,8 @@ export default async function SettingsPage() {
                         Basic organization information
                     </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                    <div className="grid gap-4 md:grid-cols-2">
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium">Organization Name</label>
-                            <Input defaultValue={settings.name} disabled />
-                        </div>
-                        <div className="space-y-2">
-                            <label className="text-sm font-medium">Subdomain</label>
-                            <Input defaultValue={(tenantSettings.subdomain as string) || (tenantSettings.slug as string)} disabled />
-                            <p className="text-xs text-muted-foreground">
-                                {settings.subdomain ? `${settings.subdomain}.awedz.id` : "Not configured"}
-                            </p>
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-sm font-medium">Billing Email</label>
-                        <Input defaultValue={settings.billing_email || ""} type="email" />
-                    </div>
-                    <Separator />
-                    <Button disabled>Save Changes (Coming Soon)</Button>
+                <CardContent>
+                    <SettingsOrganizationForm initialData={settings} />
                 </CardContent>
             </Card>
 

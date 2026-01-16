@@ -13,7 +13,7 @@ export const isProduction = process.env.NODE_ENV === 'production';
 export const baseUrl =
     !isProduction || !process.env.NEXT_PUBLIC_BASE_URL
         ? new URL('http://localhost:3004')
-        : new URL(`https://${process.env.NEXT_PUBLIC_BASE_URL}`);
+        : new URL(`${process.env.NEXT_PUBLIC_BASE_URL}`);
 
 export const getSupabaseFileUrl = (path: string, bucket: string = 'avatars') => {
     if (path.startsWith('http')) return path;

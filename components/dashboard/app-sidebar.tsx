@@ -131,6 +131,11 @@ const serviceItems: NavItem[] = [
         url: "/posts",
         icon: Megaphone,
     },
+    {
+        title: "Set Categories",
+        url: "/vendors/set-categories",
+        icon: Target,
+    },
 ];
 
 const financeItems: NavItem[] = [

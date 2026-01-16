@@ -6,21 +6,18 @@ export async function getTenantSettings() {
     const supabase = await createClient();
     const tenant = await getCurrentTenant();
 
-    if (!tenant) return DUMMY_SETTINGS;
+    if (!tenant) return null;
 
-    const { data } = await supabase
+    const { data, error } = await supabase
         .from("tenants")
         .select("*")
         .eq("id", tenant.id)
         .single();
 
-    // If we have a tenant from getCurrentTenant, we should have data.
-    // But if somehow retrieval fails or tenant is bare bones?
-    // User requested dummy fallback if "no data".
-    // Since we are auth'd as tenant, replacing *real* settings with dummy is risky if name is just empty.
-    // But if row is missing (unlikely if auth passed), DUMMY.
-
-    if (!data) return DUMMY_SETTINGS;
+    if (error) {
+        console.error("Error fetching tenant settings:", error);
+        return null; // Or return partial default
+    }
 
     return {
         name: data.name,
@@ -28,6 +25,8 @@ export async function getTenantSettings() {
         billing_email: data.billing_email,
         description: data.description,
         logoUrl: data.logo_url,
-        // ... other settings
+        settings: data.settings,
+        slug: data.slug,
+        status: data.status
     };
 }
